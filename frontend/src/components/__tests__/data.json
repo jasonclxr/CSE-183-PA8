@@ -1,0 +1,236 @@
+{
+  "Filters": {
+    "selectedFilters": {
+      "Sort By": {
+        "Recommended": false
+      },
+      "BadFilter2": false,
+      "BadFilter": false,
+      "Body Style": {
+        "All": false
+      }
+    },
+    "filters": {
+      "BadFilter": {
+        "max": " AND price <= ",
+        "min": "And price >= ",
+        "type": "anyOfoneOfMinMax",
+        "order": 2
+      },
+      "Price": {
+        "max": " AND price <= ",
+        "min": "And price >= ",
+        "type": "minMax",
+        "order": 2
+      },
+      "Sort By": {
+        "type": "oneOf",
+        "order": 0,
+        "default": "Recommended",
+        "options": [
+          "Recommended",
+          "Price: Lowest First",
+          "Price: Highest First",
+          "Date listed: Newest First",
+          "Date listed: Oldest First"
+        ]
+      },
+      "Body Style": {
+        "type": "anyOf",
+        "order": 1,
+        "default": "All",
+        "options": [
+          "All",
+          "Sedan",
+          "Minivan",
+          "Hatchback"
+        ]
+      }
+    }
+  },
+  
+  "ListingData": {
+    "545e5e25-5116-4cef-9b46-9238bfca0540": {
+      "id": "545e5e25-5116-4cef-9b46-9238bfca0540",
+      "userid": "6a749dbf-a0a6-4466-a514-6d1a05771873",
+      "category": "Marketplace/Vehicles/Trucks",
+      "creationDate": "2021-11-29T08:00:00.000Z",
+      "price": 13500,
+      "title": "2019 Ford F-150",
+      "text": "Used Ford F-150. 60,000 miles",
+      "filters": {
+        "Year": 2019,
+        "Color": "White",
+        "Price": 13500
+      },
+      "images": [
+        "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2019-ford-f-150-limited-3p5l-crew-cab-1544727022.jpg?crop=0.745xw:0.914xh;0.0385xw,0.0576xh&resize=640:*",
+        "https://blogmedia.dealerfire.com/wp-content/uploads/sites/275/2019/01/front-interior-of-a-2019-Ford-F-150_o.jpg",
+        "https://www.gannett-cdn.com/presto/2018/07/26/PDTF/3c21cc9a-3d6e-4a4f-85a2-76ad6d8a65fc-2019-Ford-F-150-Limited-06.jpg"
+      ],
+      "name": {
+        "last": "Martirosyan",
+        "first": "Artyom"
+      }
+    }
+  },
+
+  "Categories": {
+    "Marketplace": {
+      "filters": {},
+      "subcategories": [
+        "Vehicles",
+        "Real Estate"
+      ]
+    },
+
+    "Marketplace/Vehicles": {
+      "filters": {
+        "Price": {
+          "max": " AND price <= ",
+          "min": "And price >= ",
+          "type": "minMax",
+          "order": 2
+        },
+        "Sort By": {
+          "type": "oneOf",
+          "order": 0,
+          "default": "Recommended",
+          "options": [
+            "Recommended",
+            "Price: Lowest First",
+            "Price: Highest First",
+            "Date listed: Newest First",
+            "Date listed: Oldest First"
+          ]
+        },
+        "Bad Filter": {
+          "type": "badFilter",
+          "order": 0,
+          "default": "A",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
+        }
+      },
+      "subcategories": [
+        "Cars",
+        "Trucks"
+      ]
+    },
+
+    "Marketplace/Vehicles/Cars": {
+      "filters": {
+        "Price": {
+          "max": " AND price <= ",
+          "min": "And price >= ",
+          "type": "minMax",
+          "order": 2
+        },
+        "Sort By": {
+          "type": "oneOf",
+          "order": 0,
+          "default": "Recommended",
+          "options": [
+            "Recommended",
+            "Price: Lowest First",
+            "Price: Highest First",
+            "Date listed: Newest First",
+            "Date listed: Oldest First"
+          ]
+        },
+        "Body Style": {
+          "type": "anyOf",
+          "order": 1,
+          "default": "All",
+          "options": [
+            "All",
+            "Sedan",
+            "Minivan",
+            "Hatchback"
+          ]
+        }
+      },
+      "subcategories": []
+    }
+  },
+
+  "Listings": {
+    "Marketplace/Vehicles": [
+      {
+        "id": "545e5e25-5116-4cef-9b46-9238bfca0540",
+        "userid": "6a749dbf-a0a6-4466-a514-6d1a05771873",
+        "category": "Marketplace/Vehicles/Trucks",
+        "creationDate": "2021-11-29T08:00:00.000Z",
+        "price": 13500,
+        "title": "2019 Ford F-150",
+        "text": "Used Ford F-150. 60,000 miles",
+        "filters": {
+          "Year": 2019,
+          "Color": "White",
+          "Price": 13500
+        },
+        "imageURL": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2019-ford-f-150-limited-3p5l-crew-cab-1544727022.jpg?crop=0.745xw:0.914xh;0.0385xw,0.0576xh&resize=640:*"
+      },
+      {
+        "id": "30151c78-9552-429b-a647-f4ec26000b63",
+        "userid": "91740638-6dc6-4837-bb85-04d2ab45523e",
+        "category": "Marketplace/Vehicles/Trucks",
+        "creationDate": "2021-11-29T08:00:00.000Z",
+        "price": 2000,
+        "title": "2002 Toyota Tacoma",
+        "text": "Like new 2002 Toyota Tacoma, only 320,000 miles!",
+        "filters": {
+          "Year": 2002,
+          "Color": "Black",
+          "Price": 2000
+        },
+        "imageURL": "https://media.ed.edmunds-media.com/toyota/tacoma/2001/oem/2001_toyota_tacoma_extended-cab-pickup_s-runner-v6_fq_oem_1_500.jpg"
+      },
+      {
+        "id": "87fc9b7f-a5e8-4e8e-a309-7798cc78b88e",
+        "userid": "6a749dbf-a0a6-4466-a514-6d1a05771873",
+        "category": "Marketplace/Vehicles",
+        "creationDate": "2021-11-29T08:00:00.000Z",
+        "price": 600,
+        "title": "Go Kart",
+        "text": "Be careful not to hit a banana",
+        "filters": {
+          "Price": 600
+        },
+        "imageURL": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6448/6448558_sd.jpg"
+      },
+      {
+        "id": "5203ae22-53f1-4ccb-a5c9-3947d6dd1463",
+        "userid": "91740638-6dc6-4837-bb85-04d2ab45523e",
+        "category": "Marketplace/Vehicles/Cars",
+        "creationDate": "2021-11-29T08:00:00.000Z",
+        "price": 10000,
+        "title": "2015 Honda Odyssey",
+        "text": "Time to take the kids to soccer",
+        "filters": {
+          "Price": 10000,
+          "Body Style": "Minivan"
+        },
+        "imageURL": "https://agirlsguidetocars.com/wp-content/uploads/2015/06/2015-Honda-Odyssey.png"
+      },
+      {
+        "id": "35fbc3cb-deff-451f-83d8-d88c931240d4",
+        "userid": "91740638-6dc6-4837-bb85-04d2ab45523e",
+        "category": "Marketplace/Vehicles/Cars",
+        "creationDate": "2021-11-29T08:00:00.000Z",
+        "price": 8000,
+        "title": "2013 Toyota Prius",
+        "text": "This Prius will cut the cost of your commute in half!",
+        "filters": {
+          "Price": 8000,
+          "Body Style": "Sedan"
+        },
+        "imageURL": "https://cars.usnews.com/static/images/Auto/izmo/354418/2013_toyota_prius_angularfront.jpg"
+      }
+    ]
+  }
+}

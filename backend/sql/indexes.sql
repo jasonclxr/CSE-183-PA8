@@ -1,0 +1,2 @@
+-- Index Your Tables Here --
+-- CREATE INDEX user_idx on User(id);

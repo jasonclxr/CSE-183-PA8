@@ -1,0 +1,557 @@
+#
+# CSE183 Assignment 8 Backend
+#
+
+openapi: '3.0.3'
+
+info:
+  description: CSE183 Assignment 8 Backend
+  version: 0.1.0
+  title: CSE183 Assignment 8 Backend
+
+servers:
+  - url: http://localhost:3010
+
+paths:
+  /v0/listings:
+    post:
+      description: Gets all listings
+      requestBody:
+        description: listing preferences
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingsRequest'
+      responses:
+        200:
+          description: Listings Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListingsResponse'
+        404:
+          description: Category, User, or Listings not found
+  /v0/listing:
+    get:
+      description: One individual listing via id
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: id
+          required: true
+      responses:
+        200:
+          description: Application response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniqueListing'
+        404:
+          description: Not found
+    post:
+      description: Creates new listing
+      security:
+        - bearerAuth: []         # use the same name as above
+      requestBody:
+        description: Listing to post
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListingPost'
+      responses:
+        201:
+          description: Application response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostListingResponse'
+        400:
+          description: Unexpected properties
+
+  /v0/categories:
+    get:
+      description: Returns filters and subcategories of the current
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+          description: The category directory
+          required: true
+      responses:
+        200:
+          description: Category info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        404:
+          description: That category directory does not exist
+
+  /v0/user:
+    get:
+      description: Returns all users
+      parameters:
+        - in: query
+          name: email
+          schema:
+            type: string
+          description: what email?
+          required: false
+        - in: query
+          name: phone
+          schema:
+            type: string
+          description: what phone number?
+          required: false
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: what was the users id?
+          required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Userpool'
+        404:
+          description: User does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: Adds a new user
+      requestBody:
+        description: Users information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        201:
+          description: Application response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrivateUserInfoOut'
+        400:
+          description: Missing property
+        409:
+          description: account already exists with that information
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnexpectedError'
+  
+  /v0/replies:
+    post:
+      description: Adds a new reply
+      security:
+        - bearerAuth: []         # use the same name as above
+      requestBody:
+        description: New reply Information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplyPost'
+      responses:
+        201:
+          description: Successfully posted new reply
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reply'
+        400:
+          description: missing information
+
+  /v0/replies/{listingid}:
+    get:
+      description: Get the replies for a listing
+      security:
+        - bearerAuth: []         # use the same name as above
+      parameters:
+        - in: path
+          name: listingid
+          description: Which listing was responded to
+          schema:
+            type: string
+            format: uuid
+          required: true
+      responses:
+        200:
+          description: Successfully got all replies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListingReplies'
+        400:
+          description: Missing property
+        404:
+          description: No responses found
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    UnexpectedError:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Userpool:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserInfoOut'
+    # Regex below used from https://stackoverflow.com/questions/16699007/regular-expression-to-match-standard-10-digit-phone-number
+    PhoneNumber:
+      type: string
+      pattern: '^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$'
+    UserInfoOut:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: object
+          properties:
+            First:
+              type: string
+            Last:
+              type: string
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          type: string
+          format: email
+      required:
+        - id
+        - name
+        - phone
+        - email
+    PrivateUserInfoOut:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: object
+          properties:
+            First:
+              type: string
+            Last:
+              type: string
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          type: string
+          format: email
+        accessToken: 
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - email
+        - accessToken
+    
+    # An array of listings
+    ListingsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Listing'
+        
+    ListingsRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+        userid:
+          type: string
+          format: uuid
+        search:
+          type: string
+        filters:
+          type: object
+    PostListingResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userid:
+          type: string
+          format: uuid
+        category:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+        title:
+          type: string
+        text:
+          type: string
+        filters:
+          type: object
+        images:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - userid
+        - category
+        - creationDate
+        - price
+        - title
+        - text
+        - filters
+        - images      
+    Listing:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userid:
+          type: string
+          format: uuid
+        category:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+        title:
+          type: string
+        text:
+          type: string
+        filters:
+          type: object
+        imageURL:
+          type: string
+      required:
+        - id
+        - userid
+        - category
+        - creationDate
+        - price
+        - title
+        - text
+        - filters
+        - imageURL
+    UniqueListing:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userid:
+          type: string
+          format: uuid
+        category:
+          type: string
+        creationDate:
+          type: string
+          format: date-time
+        price:
+          type: number
+        title:
+          type: string
+        text:
+          type: string
+        filters:
+          type: object
+        images:
+          type: array
+          items:
+            type: string
+        name:
+          type: object
+          properties:
+            First:
+              type: string
+            Last:
+              type: string
+      required:
+        - id
+        - name
+        - userid
+        - category
+        - creationDate
+        - price
+        - title
+        - text
+        - filters
+        - images
+    
+    ListingPost:
+      type: object
+      properties:
+        userid:
+          type: string
+          format: uuid
+        category:
+          type: string
+        price:
+          type: number
+        title:
+          type: string
+        text:
+          type: string
+        filters:
+          type: object
+        images:
+          type: array
+          items:
+            type: string
+      required:
+        - userid
+        - category
+        - price
+        - title
+        - text
+        - filters
+        - images
+
+    ListingReplies:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReplyOutput'
+
+    ReplyOutput:
+      type: object
+      properties:
+        name:
+          type: object
+          properties:
+            first:
+              type: string
+            last:
+              type: string
+          required:
+            - first
+            - last
+        message:
+          type: string
+        messagedate:
+          type: string
+          format: date-time
+      required:
+        - name
+        - message
+        - messagedate
+
+    CategoryResponse:
+      type: object
+      properties:
+        filters:
+          type: object
+        subcategories:
+          type: array
+          items:
+            type: string
+      required:
+        - filters
+        - subcategories
+
+    UserInfo:
+      type: object
+      properties:
+        name:
+          type: object
+          properties:
+            First:
+              type: string
+            Last:
+              type: string
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        email:
+          type: string
+          format: email
+        password: 
+          type: string
+      required:
+        - name
+        - phone
+        - email
+        - password
+
+    Reply:
+      description: Information needed for reply
+      type: object
+      properties:
+        listingid:
+          type: string
+          format: uuid
+        userid:
+          type: string
+          format: uuid
+        message:
+          type: string
+        messagedate:
+          type: string
+          format: date-time
+      required:
+        - listingid
+        - userid
+        - message
+        - messagedate
+    
+    ReplyPost:
+      description: Information needed for reply
+      type: object
+      properties:
+        listingid:
+          type: string
+          format: uuid
+        userid:
+          type: string
+          format: uuid
+        message:
+          type: string
+      required:
+        - listingid
+        - userid
+        - message
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
